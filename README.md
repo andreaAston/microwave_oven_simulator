@@ -9,8 +9,8 @@ Malawi University of Business and Applied Sciences (MUBAS)
 | Student ID | BECE/21/SS/002 |
 | Lecturer | Mr M. Banda |
 | Due date | 3 November 2026 |
-| Live demo | `<add your deployment link here>` |
-| Repository | `<add your GitHub repo link here>` |
+| Live demo | `https://microwaveovensimulator.vercel.app/` |
+| Repository | `https://github.com/andreaAston/microwave_oven_simulator.git` |
 
 ## Overview
 
