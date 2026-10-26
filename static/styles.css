@@ -1,0 +1,508 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: clamp(8px, 2vmin, 24px);
+  color: #e8ecef;
+  background: #1d2227;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+}
+
+.oven {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr);
+  gap: clamp(12px, 2vmin, 24px);
+  width: min(1120px, 100%);
+  height: min(690px, 96vh);
+  min-height: 430px;
+  padding: clamp(12px, 2vmin, 24px);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #d9dde2, #9aa1aa);
+  box-shadow: 0 18px 50px #000a, inset 0 2px 3px #fff8;
+}
+
+.cavity-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  border: clamp(6px, 1.2vmin, 12px) solid #2d3238;
+  border-radius: 12px;
+  background: #111;
+  box-shadow: inset 0 0 18px #000;
+}
+
+.cavity {
+  position: absolute;
+  inset: 0;
+  perspective: 700px;
+  background: radial-gradient(ellipse at 50% 40%, #2a3036, #0d1013 75%);
+  transition: background 0.5s;
+}
+
+.lit .cavity {
+  background: radial-gradient(ellipse at 50% 35%, #fff6d8, #d8c58e 60%, #8a7b52);
+}
+
+.cooking .cavity {
+  animation: glow 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: inset 0 0 40px 8px #ff8a2a99;
+  }
+
+  to {
+    box-shadow: inset 0 0 90px 30px #ff6a0099;
+  }
+}
+
+.tt-wrap {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  width: min(72%, 62vh);
+  aspect-ratio: 1;
+  transform: translateX(-50%) rotateX(66deg);
+}
+
+.tt {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.cooking .tt {
+  animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.plate {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f6f8f9 0 56%, #c9d1d6 57% 60%, #f6f8f9 61%);
+  box-shadow: 0 8px 14px #0008;
+}
+
+.food {
+  position: absolute;
+  top: 21%;
+  left: 21%;
+  width: 58%;
+  height: 58%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 35%, #f1c15a 0 7%, #0000 8%),
+    radial-gradient(circle at 68% 62%, #b83225 0 6%, #0000 7%),
+    radial-gradient(circle at 58% 24%, #f1c15a 0 5%, #0000 6%),
+    radial-gradient(circle at 25% 68%, #6b8e3a 0 5%, #0000 6%),
+    radial-gradient(circle, #e3a95f 0 62%, #b9783a 63% 80%, #8f5a2b 81%);
+  transition: filter 1s;
+}
+
+.cooking .food {
+  filter: saturate(1.3) brightness(1.12);
+}
+
+.waves::before,
+.waves::after {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 60%;
+  aspect-ratio: 1;
+  margin: -30% 0 0 -30%;
+  border: 3px solid #ffb04a;
+  border-radius: 50%;
+  content: "";
+  opacity: 0;
+}
+
+.cooking .waves::before {
+  animation: wave 1.6s linear infinite;
+}
+
+.cooking .waves::after {
+  animation: wave 1.6s linear 0.8s infinite;
+}
+
+@keyframes wave {
+  from {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+.door {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  border: clamp(5px, 1vmin, 10px) solid #3b424a;
+  border-radius: 6px;
+  background:
+    radial-gradient(#000b 1.2px, #0000 1.7px) 0 0 / 8px 8px,
+    linear-gradient(135deg, #7f93a059, #1c262e99);
+  transition: transform 0.8s cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.open .door {
+  transform: perspective(900px) rotateY(-82deg);
+}
+
+.tags {
+  position: absolute;
+  top: 3%;
+  left: 3%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+#doorTxt {
+  color: #f4f1e6;
+  font: italic 800 clamp(1.5rem, 4.6vw, 3rem) / 1 Georgia, serif;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 6px #000c;
+}
+
+.lit #doorTxt {
+  color: #3a2d12;
+  text-shadow: 0 1px 0 #fff8;
+}
+
+#statTxt {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: #334;
+  color: #cfd8e0;
+  font-size: clamp(0.75rem, 1.6vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.cooking #statTxt {
+  background: #e8651a;
+  color: #fff;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vmin;
+  min-height: 0;
+  color: #1a1f24;
+}
+
+.lcd {
+  padding: 0.7rem 0.9rem;
+  border: 3px solid #55606a;
+  border-radius: 10px;
+  background: #0e1a17;
+  box-shadow: inset 0 0 14px #000;
+}
+
+#time {
+  color: #5cffb0;
+  font: 700 clamp(1.9rem, 5vw, 3.3rem) / 1 "Courier New", monospace;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-shadow: 0 0 10px #2fe58f;
+}
+
+.lcd-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.3em;
+  margin-top: 0.35rem;
+  color: #8ff0c4;
+  font: 600 clamp(0.72rem, 1.5vw, 0.95rem) "Courier New", monospace;
+}
+
+.group {
+  padding: 1vmin;
+  border: 2px solid #7d858e;
+  border-radius: 10px;
+  background: #c3c9cf;
+}
+
+.group h3 {
+  margin: 0 0 0.4rem;
+  color: #47505a;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+button {
+  padding: 0.55rem 0.3rem;
+  border: 1px solid #5b636b;
+  border-bottom-width: 3px;
+  border-radius: 8px;
+  background: linear-gradient(#f4f6f7, #cfd5da);
+  color: #1d2328;
+  cursor: pointer;
+  font-size: clamp(0.78rem, 1.6vw, 1rem);
+  font-weight: 700;
+  transition: transform 0.08s, filter 0.15s;
+}
+
+button:hover {
+  filter: brightness(1.06);
+}
+
+button:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+.button-icon {
+  display: none;
+}
+
+button.on {
+  border-color: #9a6a10;
+  background: linear-gradient(#ffd98a, #f0a830);
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.row > button {
+  flex: 1;
+}
+
+#start {
+  background: linear-gradient(#8fe3a6, #3fb865);
+  color: #05290f;
+}
+
+#stop {
+  background: linear-gradient(#f2a0a0, #d9534f);
+  color: #330808;
+}
+
+#start.dim {
+  filter: grayscale(0.8) opacity(0.65);
+}
+
+#doorBtn {
+  width: 100%;
+}
+
+.dev {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2c343b;
+  font-size: 0.72rem;
+}
+
+select {
+  flex: 1;
+  padding: 0.2rem;
+  border: 1px solid #6b737b;
+  border-radius: 6px;
+  background: #eef1f3;
+}
+
+#strip {
+  margin-top: auto;
+  color: #2c343b;
+  font: 0.68rem "Courier New", monospace;
+  opacity: 0.85;
+}
+
+@media (max-width: 700px) {
+  body {
+    min-height: 100vh;
+    padding: 8px;
+  }
+
+  .oven {
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    gap: clamp(5px, 1.5vw, 10px);
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    aspect-ratio: 1.5 / 1;
+    padding: clamp(7px, 2vw, 12px);
+  }
+
+  .cavity-wrap {
+    min-height: 0;
+    border-width: clamp(4px, 1.2vw, 8px);
+  }
+
+  .panel {
+    gap: clamp(3px, 0.9vw, 6px);
+    min-width: 0;
+  }
+
+  .lcd {
+    padding: clamp(4px, 1vw, 7px);
+    border-width: 2px;
+    border-radius: 6px;
+  }
+
+  #time {
+    font-size: clamp(0.85rem, 4.6vw, 1.6rem);
+    letter-spacing: 0.02em;
+  }
+
+  .lcd-row {
+    gap: 2px;
+    margin-top: 2px;
+    font-size: clamp(0.48rem, 1.8vw, 0.72rem);
+  }
+
+  .group {
+    padding: clamp(3px, 0.9vw, 6px);
+    border-width: 1px;
+    border-radius: 6px;
+  }
+
+  .group h3 {
+    margin-bottom: 2px;
+    font-size: clamp(0.45rem, 1.7vw, 0.65rem);
+    letter-spacing: 0.08em;
+  }
+
+  .row,
+  .row > button {
+    min-width: 0;
+  }
+
+  .row {
+    gap: clamp(2px, 0.7vw, 5px);
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(2px, 0.6vw, 4px);
+  }
+
+  button {
+    min-width: 0;
+    padding: clamp(2px, 0.7vw, 4px) 1px;
+    border-radius: 5px;
+    font-size: clamp(0.45rem, 2.2vw, 0.72rem);
+    line-height: 1.1;
+  }
+
+  .wide {
+    grid-column: span 1;
+  }
+
+  .dev {
+    gap: 3px;
+    font-size: clamp(0.45rem, 1.7vw, 0.65rem);
+  }
+
+  select {
+    min-width: 0;
+    padding: 1px;
+    font-size: inherit;
+  }
+
+  #strip {
+    font-size: clamp(0.4rem, 1.5vw, 0.58rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .oven {
+    border-radius: 12px;
+  }
+
+  .lcd-row {
+    flex-direction: row;
+  }
+
+  .time-hint,
+  .compact-label {
+    display: none;
+  }
+
+  .button-icon {
+    display: inline;
+    font-size: 1.3em;
+  }
+
+  #start,
+  #stop,
+  #doorBtn,
+  #clear {
+    min-height: 20px;
+  }
+
+  #strip {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .panel {
+    gap: 2px;
+  }
+
+  .lcd {
+    padding: 2px;
+  }
+
+  #time {
+    font-size: 0.75rem;
+  }
+
+  .group {
+    padding: 2px;
+  }
+
+  .group h3 {
+    margin-bottom: 1px;
+  }
+
+  button {
+    padding: 1px 0;
+  }
+}

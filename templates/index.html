@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Microwave Oven Simulator – RTS 521 Assignment 2</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+
+  <body>
+    <main class="oven" id="oven">
+      <section class="cavity-wrap" id="wrap" aria-label="Microwave oven interior">
+        <div class="cavity">
+          <div class="waves"></div>
+          <div class="tt-wrap">
+            <div class="tt">
+              <div class="plate">
+                <div class="food"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="door"></div>
+        <div class="tags">
+          <div id="doorTxt">DOOR CLOSED</div>
+          <span id="statTxt">STANDING BY</span>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Microwave controls">
+        <div class="lcd">
+          <div id="time">00:00:00</div>
+          <div class="lcd-row">
+            <span id="msg">--</span>
+            <span id="pw">FULL 600 W</span>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Power</h3>
+          <div class="row">
+            <button id="half">Half 300 W</button>
+            <button id="full" class="on">Full 600 W</button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3>Set time <span class="time-hint">(presses add up)</span></h3>
+          <div class="grid" id="times">
+            <button data-s="1">1s</button>
+            <button data-s="10">10s</button>
+            <button data-s="30">30s</button>
+            <button data-s="60">1m</button>
+            <button data-s="300">5m</button>
+            <button data-s="600">10m</button>
+            <button data-s="3600">1h</button>
+            <button class="wide" id="clear" aria-label="Clear time">
+              <span class="button-icon" aria-hidden="true">×</span>
+              <span class="compact-label">Clear Time</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="start" aria-label="Start">
+            <span class="button-icon" aria-hidden="true">▶</span>
+            <span class="compact-label">Start</span>
+          </button>
+          <button id="stop" aria-label="Stop">
+            <span class="button-icon" aria-hidden="true">■</span>
+            <span class="compact-label">Stop</span>
+          </button>
+        </div>
+        <button id="doorBtn" aria-label="Open or close door">
+          <span class="button-icon" aria-hidden="true">⇆</span>
+          <span class="compact-label">Open / Close Door</span>
+        </button>
+
+        <div class="dev">
+          <label for="fault">Test fault:</label>
+          <select id="fault">
+            <option value="none">none</option>
+            <option value="Turntable fault">turntable</option>
+            <option value="Emitter fault">emitter</option>
+          </select>
+        </div>
+        <div id="strip"></div>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
