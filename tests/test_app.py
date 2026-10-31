@@ -54,6 +54,46 @@ class SimulatorTests(unittest.TestCase):
         self.assertEqual(state["state"], "ALARM")
         self.assertFalse(present_state(state, now=101)["heating"])
 
+    def test_fault_message_overrides_stale_user_message(self):
+        state = new_state()
+        state.update(
+            state="COOK",
+            remaining_seconds=30,
+            last_countdown_at=90,
+            message="Cooking stopped",
+            message_expires_at=999,
+        )
+
+        state = process_action(
+            state,
+            {"type": "tick"},
+            fault="Turntable fault",
+            now=101,
+        )
+
+        self.assertEqual(state["state"], "ALARM")
+        self.assertEqual(state["alarm_message"], "Turntable fault")
+        self.assertEqual(present_state(state, now=101)["message"], "Turntable fault")
+
+    def test_reset_to_waiting_clears_stale_messages(self):
+        state = new_state()
+        state.update(
+            state="DONE",
+            remaining_seconds=0,
+            done_expires_at=100,
+            message="Cooking complete",
+            message_expires_at=250,
+            alarm_message="Emitter fault",
+            alarm_expires_at=250,
+        )
+
+        state = process_action(state, {"type": "stop"}, now=101)
+
+        self.assertEqual(state["state"], "WAITING")
+        self.assertEqual(state["message"], "")
+        self.assertEqual(state["alarm_message"], "")
+        self.assertEqual(present_state(state, now=101)["message"], "")
+
     def test_invalid_actions_are_rejected(self):
         with self.assertRaises(ValueError):
             process_action(None, {"type": "add_time", "seconds": 2}, now=100)

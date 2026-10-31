@@ -125,6 +125,12 @@ def reset_to_waiting(state: dict[str, Any]) -> None:
     state["remaining_seconds"] = 0
     state["state"] = "WAITING"
     state["last_countdown_at"] = 0
+    state["message"] = ""
+    state["message_expires_at"] = 0
+    state["set_time_expires_at"] = 0
+    state["done_expires_at"] = 0
+    state["alarm_expires_at"] = 0
+    state["alarm_message"] = ""
 
 
 def process_action(
@@ -168,6 +174,8 @@ def process_action(
 
     if starting_state in OPERATIONAL_STATES and fault != "none":
         state["state"] = "ALARM"
+        state["message"] = ""
+        state["message_expires_at"] = 0
         state["alarm_message"] = fault
         state["alarm_expires_at"] = current_time + 2.5
     else:
